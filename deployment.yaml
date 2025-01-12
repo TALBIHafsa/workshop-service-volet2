@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workshop-service
+  namespace: pitstop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workshop-service
+  template:
+    metadata:
+      labels:
+        app: workshop-service
+    spec:
+      containers:
+        - name: workshop-service
+          image: talbihafsa/pitstop-workshop-planning:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PROD_DB_USERNAME
+              value: "root"
+            - name: PROD_DB_PASSWORD
+              value: "TALtal2024**"
+            - name: PROD_DB_NAME
+              value: "pitstop"
+            - name: PROD_DB_HOSTNAME
+              value: "mysql"
+            - name: PROD_DB_PORT
+              value: "3306"
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ASPNETCORE_URLS
+              value: "http://+:5000"
+            - name: DOTNET_RUNNING_IN_CONTAINER
+              value: "true"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          startupProbe:
+            httpGet:
+              path: /
+              port: 3000
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
