@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: workshop-service
-          image: talbihafsa/pitstop-workshop-planning:5346a622
+          image: talbihafsa/pitstop-workshop-planning:89547406
           ports:
             - containerPort: 3000
           env:
